@@ -3,8 +3,11 @@ var routeDevice = express.Router();
 var sql = require('../mysql');
 
 //API Moudel to get and list devices form DB DAM
-
-//Get Device list
+// Basic functions for DB Data retrival 
+// -- GET Device List: List all object inside "Dispositivo" Table
+//    Responds 200 if all OK, 500 if error while fetching data from DB
+// -- Get Device ID: List specific Device with param set as "ID"
+//    Responds 200 if all OK, 500 if error while fetching data from DB
 // 
 routeDevice.get('/', function (req, res) {
     //res.send("dispositivo");

@@ -1,12 +1,15 @@
 const express = require('express');
-var routeDevice = express.Router();
+var routeMeasure = express.Router();
 var sql = require('../mysql');
 
-//API Moudel to get and list devices form DB DAM
-
-//Get Device list
+//API Moudel to get and list measures from form DB DAM
+// Basic functions for DB Data retrival 
+// -- GET Measures List: List all object inside "Dispositivo" Table
+//    Responds 200 if all OK, 500 if error while fetching data from DB
+// -- Get Device ID: List specific Device with param set as "ID"
+//    Responds 200 if all OK, 500 if error while fetching data from DB
 // 
-routeDevice.get('/', function (req, res) {
+routeMeasure.get('/', function (req, res) {
     //res.send("dispositivo");
     
     let query = 'SELECT * FROM Dispositivos';
@@ -23,7 +26,7 @@ routeDevice.get('/', function (req, res) {
     });
 });
 
-routeDevice.get('/:id', function (req, res) {
+routeMeasure.get('/:id', function (req, res) {
     let deviceID = req.params.id;
     let query = 'SELECT * FROM Dispositivos WHERE dispositivoId =?';
     sql.query(query, [deviceID], (err, data) => {
@@ -39,7 +42,7 @@ routeDevice.get('/:id', function (req, res) {
     //res.send("dispositivo with id " + req.params.id);
 });
 
-routeDevice.delete('/:id', function (req, res) {
+routeMeasure.delete('/:id', function (req, res) {
     let query = 'DELETE from Dispositivos WHERE dispositivoId  = ' + req.params.id;
     console.log(query);
     sql.query(query, (err, response) => {
@@ -53,4 +56,4 @@ routeDevice.delete('/:id', function (req, res) {
 });
 
 // Module Export for user on Main module
-module.exports = routeDevice;
+module.exports = routeMeasure;
