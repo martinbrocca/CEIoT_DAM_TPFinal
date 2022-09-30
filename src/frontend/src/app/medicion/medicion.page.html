@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/dispositivo/{{disp.dispositivoId}}">
+        <ion-icon name="caret-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Mediciones del Dispositivo: {{disp.nombre}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/">
+        <ion-icon name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-text-center">
+    <ion-row class="header-row">
+      <ion-col>
+        <ion-text>Fecha</ion-text>
+      </ion-col>
+      <ion-col>
+        <ion-text> Valor </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let med of med" appResaltar>
+      <ion-col>
+        <ion-text>
+          {{med.fecha}}
+        </ion-text>
+      </ion-col>
+      <ion-col>
+        <ion-text>
+          {{med.valor | unidad:"Presion"}}
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

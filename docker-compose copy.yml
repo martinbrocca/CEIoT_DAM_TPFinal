@@ -33,25 +33,14 @@ services:
         image:                   abassi/nodejs-server:10.0-dev
         volumes:
             -                    ./src/backend:/home/node/app/src
-           # -                    ./src/frontend:/home/node/app/static
+            -                    ./src/frontend:/home/node/app/static
         networks:
             -                    app-fullstack-net
         depends_on:
             -                    mysql-server
         ports: 
             -                    "8000:3000"
-        command:                 nodemon /home/node/app/src/index.js
-
-    # ionic-frontend:
-    #     image:                   beevelop/ionic:latest
-    #     volumes:
-    #         -                    ./src/frontend:/home/app/
-    #     depends_on:
-    #         -                    node-backend
-    #     ports:
-    #         -                   8100:8100
-    #     command:                "ionic serve --external"
-
+        command:                 nodemon --watch /home/node/app/src/route /home/node/app/src/index.js
 
 networks:
     app-fullstack-net:
