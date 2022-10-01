@@ -26,7 +26,7 @@ require('highcharts/modules/solid-gauge')(Highcharts);
 })
 export class DispositivoPage implements OnInit {
   public dispositivo: Dispositivo;
-  public estadoEV: boolean;
+  public estadoEV = false;
   public myChart;
   private chartOptions;
   public medicion: Medicion;
@@ -62,10 +62,8 @@ export class DispositivoPage implements OnInit {
   }
   try {
     this.onEVError = false;
-    this.estadoEV = Boolean(this.evSrv.getEstadoActualEV(this.dispositivo.electrovalvulaId));
-    //  let estadoEVN = await this.evSrv.getEstadoActualEV(this.dispositivo.electrovalvulaId);
+    this.estadoEV =  Boolean( await this.evSrv.getEstadoActualEV(this.dispositivo.electrovalvulaId));
     console.log('DEBUG: EV State for: ' + this.dispositivo.nombre + ' EV_Id: '+ this.dispositivo.electrovalvulaId +' - state: '+  this.estadoEV);
-    // this.estadoEV = Boolean(estadoEVN);
   }
   catch (error) {
     this.onEVError = true;
