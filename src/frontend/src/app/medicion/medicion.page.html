@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button routerLink="/dispositivo/{{disp.dispositivoId}}">
+      <ion-button routerLink="/dispositivo/{{this.idDispositivo}}">
         <ion-icon name="caret-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Mediciones del Dispositivo: {{disp.nombre}}</ion-title>
+    <ion-title>Mediciones del Dispositivo: {{this.idDispositivo}}</ion-title>
     <ion-buttons slot="end">
       <ion-button routerLink="/">
         <ion-icon name="home"></ion-icon>

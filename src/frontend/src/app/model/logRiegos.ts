@@ -7,10 +7,10 @@ export class Logs{
   private _apertura: number;
   private _electrovalvulaId: number;
 
-  constructor(logId: number, fecha: Date, apertura: number, electrovalvulaId: number){
+  constructor(logId: number, apertura: number, fecha: Date,  electrovalvulaId: number){
       this._logRiegoId=logId;
-      this._fecha=fecha;
       this._apertura=apertura;
+      this._fecha=fecha;
       this._electrovalvulaId=electrovalvulaId;
   }
 

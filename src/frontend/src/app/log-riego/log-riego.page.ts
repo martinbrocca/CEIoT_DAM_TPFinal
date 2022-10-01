@@ -15,13 +15,45 @@ export class LogRiegoPage implements OnInit {
 
   public dispositivo: Dispositivo;
   public logs:  Array<Logs>;
+  public idDispositivo: string;
+  public onError: boolean;
 
-  constructor(private router: ActivatedRoute, private dServ: DispositivoService, private lServ: LogsService) { }
+  constructor(private router: ActivatedRoute, private dispService: DispositivoService, private lServ: LogsService) { }
 
   ngOnInit() {
-    let idDispositivo = this.router.snapshot.paramMap.get('id');
-    this.dispositivo = this.dServ.getDispositivo(idDispositivo);
-    this.logs = this.lServ.getLogsValvula(this.dispositivo.electrovalvulaId);
+    // this.idDispositivo = this.router.snapshot.paramMap.get('id');
+    // this.dServ.getDispositivo(this.idDispositivo).then((disp)=>{
+    //   this.dispositivo=disp;
+    //   console.log('DEBUG: Log-riego page - ngoninit got device: '+ disp);
+    //   console.log(disp);
+
+    // });
+    // this.lServ.getLogsValvula(this.dispositivo.electrovalvulaId).then((log)=> {
+    //   this.logs = log;
+    //   console.log('DEBUG: Logs Pages - got Logs' + log);
+    //   console.log(log);
+    // });
+    this.getLogsData();
+  }
+
+
+  async getLogsData() {
+    this.idDispositivo = this.router.snapshot.paramMap.get('id');
+    try {
+      console.log('DEBUG: Entered Logs page');
+      let disp = await this.dispService.getDispositivo(this.idDispositivo);
+      this.dispositivo=disp;
+      //console.log(this.dispositivo);
+       console.log('DEBUG: Logs  page, got deviceID: ' +this.idDispositivo + ' got device: ' + this.dispositivo.nombre);
+      let log = await this.lServ.getLogsValvula(this.dispositivo.electrovalvulaId);
+        this.logs=log;
+   // console.log('DEBUG: got mediciones for device: ' + this.dispositivo + ' - med: '+ this.medicion);
+      this.onError= false;
+  }
+  catch (error) {
+    this.onError = true;
+    console.log('ERROR" not able to fetch logs: ' + error);
+  }
   }
 
 }
