@@ -40,8 +40,9 @@ export class DispositivoPage implements OnInit {
   }
 
   ngOnInit() {
-   // this.generarChart();
+
     this.getDispositivoData();
+   // this.generarChart();
 
   }
 
@@ -87,11 +88,20 @@ export class DispositivoPage implements OnInit {
     this.lSrv.newEntrada(log);
     // If I close the EV, then I need also to push a Medicion record.
     if (!this.estadoEV){
-      let med: Medicion = new Medicion(0, now, 0, this.dispositivo.dispositivoId);
+      let newMedicion =  this.getRandomInt(0,100);
+      let med: Medicion = new Medicion(0, now, newMedicion, this.dispositivo.dispositivoId);
       this.medSrv.agregarMedicion(med);
+      this.chartValue = Number(newMedicion);
+      this.generarChart();
+      console.log('DEBUG: - New chartValue as per closing valve is ' + newMedicion + ' ' + this.chartValue);
     }
   }
 
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+  }
 
    generarChart() {
     this.chartOptions={
@@ -166,7 +176,7 @@ export class DispositivoPage implements OnInit {
         }
     }]
     };
-    console.log('DEBUG: Highcharts: valor: '+ this.medicion.valor + ' dispositivo: '  + this.dispositivo.nombre);
+   // console.log('DEBUG: Highcharts: valor: '+ this.medicion.valor + ' dispositivo: '  + this.dispositivo.nombre);
     this.myChart = Highcharts.chart('highcharts', this.chartOptions );
   }
 }

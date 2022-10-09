@@ -6,7 +6,13 @@
       </ion-button>
   </ion-buttons>
   <ion-title>Dispositivo: {{this.idDispositivo}}</ion-title>
-  </ion-toolbar>
+  <ion-buttons slot="end">
+    <ion-button routerLink="/">
+      <ion-icon name="home"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
+   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="!this.onError">

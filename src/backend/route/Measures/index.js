@@ -6,10 +6,8 @@ var sql = require('../mysql');
 // Basic functions for DB Data retrival 
 
 // -- Get Last Measure for  (Device ID) : List last Device measurement for "Dispositivo ID"
+//    Input paramater: DeviceID
 //    Responds 200 if all OK, 400 if error while fetching data from DB
-// 
-
-
 routerMeasure.get('/:id', function (req, res) {
     let deviceID = req.params.id;
     let query = 'Select * from Mediciones where dispositivoId=? order by fecha desc';
@@ -26,6 +24,7 @@ routerMeasure.get('/:id', function (req, res) {
 });
 
 // -- GET Measures List (DeviceID): List all measures for  "DispositivoID " Ordered in descendent mode.
+//    Input paramater: DeviceID
 //    Responds 200 if all OK, 400 if error while fetching data from DB
 routerMeasure.get('/:id/all', function (req, res) {
     let deviceID = req.params.id;
@@ -44,7 +43,10 @@ routerMeasure.get('/:id/all', function (req, res) {
 });
 
 
-
+// -- POST Add Measures: Adds a measure into a device with date and data provided in the body as a json object..
+//    Input paramater: N/A
+//    Body: Date, reading value, deviceId
+//    Responds 200 if all OK, 400 if error while fetching data from DB
 routerMeasure.post('/add', function(req, res) {
     sql.query('Insert into Mediciones (fecha,valor,dispositivoId) values (?,?,?)', [req.body.fecha, req.body.valor, req.body.dispositivoId], function(err, result, fields) {
         if (err) {

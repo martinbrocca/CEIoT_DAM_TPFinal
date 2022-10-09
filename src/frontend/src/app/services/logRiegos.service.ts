@@ -11,7 +11,7 @@ import { formatDate } from '@angular/common';
 })
 export class LogsService {
   logs: Array<Logs> = new Array<Logs>();
-  urlApi='http://localhost:8000';
+  urlApi='http://localhost:8000/api/v1';
 
     constructor(private _http: HttpClient ) {
    }

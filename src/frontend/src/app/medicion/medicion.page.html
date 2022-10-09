@@ -28,7 +28,7 @@
     <ion-row *ngFor="let med of med" appResaltar>
       <ion-col>
         <ion-text>
-          {{med.fecha}}
+          {{med.fecha  | date:'medium'}}
         </ion-text>
       </ion-col>
       <ion-col>

@@ -13,7 +13,7 @@ import { Logs } from '../model/logRiegos';
 
   export class ElectrovalvulaService {
     //logs: Logs = new Logs;
-    urlApi='http://localhost:8000';
+    urlApi='http://localhost:8000/api/v1';
 
       constructor(private _http: HttpClient ) {
      }

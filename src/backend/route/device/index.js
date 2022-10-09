@@ -6,14 +6,9 @@ var sql = require('../mysql');
 // Basic functions for DB Data retrival 
 // -- GET Device List: List all object inside "Dispositivo" Table
 //    Responds 200 if all OK, 400 if error while fetching data from DB
-// -- Get Device ID: List specific Device with param set as "ID"
-//    Responds 200 if all OK, 400 if error while fetching data from DB
-// 
 routeDevice.get('/', function (req, res) {
-    //res.send("dispositivo");
-    
     let query = 'SELECT * FROM Dispositivos';
-    console.log("Entro en la API " + query);
+    console.log("DEBUG: Accessed API DeviceGet with query: " + query);
     sql.query(query, (err, data) => {
         if (err) {
             console.error(err);
@@ -26,6 +21,9 @@ routeDevice.get('/', function (req, res) {
     });
 });
 
+// -- Get Device ID: List specific Device with param set as "ID"
+//    Input paramater: DeviceID
+//    Responds 200 if all OK, 400 if error while fetching data from DB
 routeDevice.get('/:id', function (req, res) {
     let deviceID = req.params.id;
     let query = 'SELECT * FROM Dispositivos WHERE dispositivoId =?';
@@ -42,6 +40,9 @@ routeDevice.get('/:id', function (req, res) {
     //res.send("dispositivo with id " + req.params.id);
 });
 
+// -- DELETE Device ID: delete specific Device with param set as "ID"
+//    Input paramater: DeviceID
+//    Responds 200 if all OK, 400 if error while fetching data from DB
 routeDevice.delete('/:id', function (req, res) {
     let query = 'DELETE from Dispositivos WHERE dispositivoId  = ' + req.params.id;
     console.log(query);

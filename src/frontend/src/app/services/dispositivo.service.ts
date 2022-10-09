@@ -15,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 export class DispositivoService {
-  urlApi="http://localhost:8000";
+  urlApi="http://localhost:8000/api/v1";
 
   constructor( public _http: HttpClient) { }
 

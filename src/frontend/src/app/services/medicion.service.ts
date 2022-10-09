@@ -10,7 +10,7 @@ import { formatDate } from '@angular/common';
   providedIn: 'root'
 })
 export class MedicionService {
-  urlApi='http://localhost:8000';
+  urlApi='http://localhost:8000/api/v1';
 
   constructor(private _http: HttpClient ) {
    }
