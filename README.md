@@ -17,5 +17,16 @@ Configuracion y uso:
 ## Arquitectura de la aplicacion:
 
 La aplicacion consta de un backend, desarrallado en NodeJS, y de un frontend, desarrollado en Ionic.
-El 
+En la siguiente figura se pueden ver las interacciones de la aplicacion de frontend con el backend:
 ![architecture](doc/architecture.png)
+
+Estructura de API;s del backend:
+
+### Device API:
+![deviceAPI](doc/DeviceAPI.png)
+
+### LogRiego API:
+![LogRiegoAPI](doc/LogRiegoAPI.png)
+
+### Measures API:
+![MeasuresAPI](doc/MeasuresAPI.png)
