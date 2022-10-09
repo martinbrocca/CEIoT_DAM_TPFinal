@@ -46,7 +46,7 @@ routerMeasure.get('/:id/all', function (req, res) {
 
 
 routerMeasure.post('/add', function(req, res) {
-    pool.query('Insert into Mediciones (fecha,valor,dispositivoId) values (?,?,?)', [req.body.fecha, req.body.valor, req.body.dispositivoId], function(err, result, fields) {
+    sql.query('Insert into Mediciones (fecha,valor,dispositivoId) values (?,?,?)', [req.body.fecha, req.body.valor, req.body.dispositivoId], function(err, result, fields) {
         if (err) {
             console.error(err);
             res.send("Error while adding a new measurement").status(400);

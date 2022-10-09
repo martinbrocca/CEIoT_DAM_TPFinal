@@ -30,7 +30,7 @@ import { Logs } from '../model/logRiegos';
       {
        console.log('DEBUG - Catched error in GetEstadoActualEV - ' + error);
         // const cerrada: Promise<number> = 0;
-        return( 0);
+        return (0);
       }
 }
   }

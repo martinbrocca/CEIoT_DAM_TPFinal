@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core';
 import { Medicion } from '../model/medicion';
 import { HttpClient } from '@angular/common/http';
+import { formatDate } from '@angular/common';
 
 
 @Injectable({
@@ -23,7 +24,7 @@ export class MedicionService {
   };
 
   agregarMedicion(medicion: Medicion){
-    return this._http.post(this.urlApi+'/measure/add',{fecha:medicion.fecha,valor:medicion.valor,dispositivoId:medicion.dispositivoId}).toPromise().then((result)=>result);
-  }
+    return this._http.post(this.urlApi+'/measure/add',{fecha:formatDate(medicion.fecha,'YYYYMMddhhmmss', 'en-US' ),valor:medicion.valor,dispositivoId:medicion.dispositivoId}).toPromise().then((result)=>result);
+   }
 
 }

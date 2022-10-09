@@ -21,18 +21,7 @@ export class LogRiegoPage implements OnInit {
   constructor(private router: ActivatedRoute, private dispService: DispositivoService, private lServ: LogsService) { }
 
   ngOnInit() {
-    // this.idDispositivo = this.router.snapshot.paramMap.get('id');
-    // this.dServ.getDispositivo(this.idDispositivo).then((disp)=>{
-    //   this.dispositivo=disp;
-    //   console.log('DEBUG: Log-riego page - ngoninit got device: '+ disp);
-    //   console.log(disp);
 
-    // });
-    // this.lServ.getLogsValvula(this.dispositivo.electrovalvulaId).then((log)=> {
-    //   this.logs = log;
-    //   console.log('DEBUG: Logs Pages - got Logs' + log);
-    //   console.log(log);
-    // });
     this.getLogsData();
   }
 
