@@ -12,6 +12,9 @@ import { Logs } from '../model/logRiegos';
 import { ElectrovalvulaService } from '../services/electrovalvula.service';
 import { MedicionService } from '../services/medicion.service';
 import { ActivatedRoute } from '@angular/router';
+import { Medicion } from '../model/medicion';
+
+
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/solid-gauge')(Highcharts);
@@ -22,31 +25,83 @@ require('highcharts/modules/solid-gauge')(Highcharts);
   styleUrls: ['./dispositivo.page.scss'],
 })
 export class DispositivoPage implements OnInit {
-  public disp: Dispositivo;
-  estadoEV: boolean;
-  private lecturaEV: number;
+  public dispositivo: Dispositivo;
+  public estadoEV = false;
   public myChart;
   private chartOptions;
+  public medicion: Medicion;
+  public idDispositivo: string;
+  public onError: boolean;
+  public onEVError: boolean;
+  private chartValue = 0;
+  private chartName = '';
+  constructor(private router: ActivatedRoute, private dispService: DispositivoService, private medSrv: MedicionService, private lSrv: LogsService, private evSrv: ElectrovalvulaService) {
 
-  constructor(private router: ActivatedRoute, private dSrv: DispositivoService, private medSrv: MedicionService, private lSrv: LogsService, private evSrv: ElectrovalvulaService) { }
-
-  ngOnInit(): void {
-    let idDisp = this.router.snapshot.paramMap.get('id');
-    this.disp = this.dSrv.getDispositivo(idDisp);
-    this.estadoEV = Boolean(this.evSrv.getEstadoActualEV(this.disp.electrovalvulaId));
-    console.log("ID= " + idDisp + " -- disp = " + this.disp + " -- estado Ev = " + this.estadoEV);
-    console.log("medServ = "+ this.medSrv.getUltimaMedicionDispositivo(idDisp));
-    this.lecturaEV = this.medSrv.getUltimaMedicionDispositivo(idDisp).valor;
   }
+
+  ngOnInit() {
+
+    this.getDispositivoData();
+   // this.generarChart();
+
+  }
+
+  async getDispositivoData() {
+    this.idDispositivo = this.router.snapshot.paramMap.get('id');
+
+    try {
+      this.onError= false;
+      //console.log('DEBUG: Entered dispositivo page');
+      let dipositivo = await this.dispService.getDispositivo(this.idDispositivo);
+      this.dispositivo=dipositivo;
+      //console.log(this.dispositivo);
+      console.log('DEBUG: dispositivo page, got deviceID: ' +this.idDispositivo + ' got device: ' + this.dispositivo.nombre);
+      let med = await this.medSrv.getMedicionByIdDispositivo(this.idDispositivo);
+      this.medicion=med;
+      console.log('DEBUG: got mediciones for device: ' + this.dispositivo.nombre + ' - med: '+ this.medicion.valor);
+      this.chartValue = Number(this.medicion.valor);
+      this.chartName = String(this.dispositivo.nombre);
+      this.generarChart();
+  }
+  catch (error) {
+    this.onError = true;
+    console.log('ERROR" not able to fetch data: ' + error);
+  }
+  try {
+    this.onEVError = false;
+    this.estadoEV =  Boolean( await this.evSrv.getEstadoActualEV(this.dispositivo.electrovalvulaId));
+    console.log('DEBUG: EV State for: ' + this.dispositivo.nombre + ' EV_Id: '+ this.dispositivo.electrovalvulaId +' - state: '+  this.estadoEV);
+  }
+  catch (error) {
+    this.onEVError = true;
+    console.log('ERROR" not able to fetch data for EV: ' + error);
+  }
+
+  }
+
   cambiarEstadoEV() {
     this.estadoEV = !this.estadoEV;
-    console.log('La electrovalvula del dispositivo' + this.disp.nombre + ' esta ' + this.estadoEV);
-    let log: Logs = new Logs(0, new Date(), Number(this.estadoEV), this.disp.electrovalvulaId);
+    let estadoEVn = Number(this.estadoEV);
+    let now = new Date();
+    console.log('La electrovalvula del dispositivo' + this.dispositivo.nombre + ' esta ' + this.estadoEV + ' en numeros:  ' + estadoEVn);
+    let log: Logs = new Logs(0,  Number(this.estadoEV), now , this.dispositivo.electrovalvulaId);
     this.lSrv.newEntrada(log);
+    // If I close the EV, then I need also to push a Medicion record.
+    if (!this.estadoEV){
+      let newMedicion =  this.getRandomInt(0,100);
+      let med: Medicion = new Medicion(0, now, newMedicion, this.dispositivo.dispositivoId);
+      this.medSrv.agregarMedicion(med);
+      this.chartValue = Number(newMedicion);
+      this.generarChart();
+      console.log('DEBUG: - New chartValue as per closing valve is ' + newMedicion + ' ' + this.chartValue);
+    }
   }
-  ionViewDidEnter() {
-    this.generarChart();
-   }
+
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+  }
 
    generarChart() {
     this.chartOptions={
@@ -59,7 +114,8 @@ export class DispositivoPage implements OnInit {
           height: '300px'
         }
         ,title: {
-          text: [this.disp.nombre]
+          // text: [String(this.dispositivo.nombre)]
+          text: [String(this.chartName)]
         }
         ,credits:{enabled:false}
         ,pane: {
@@ -90,7 +146,7 @@ export class DispositivoPage implements OnInit {
             rotation: 'auto'
         },
         title: {
-            text: 'Cb kPa'
+            text: 'Humedad de Suelo'
         },
         plotBands: [{
             from: 0,
@@ -113,12 +169,14 @@ export class DispositivoPage implements OnInit {
     ,
     series: [{
         name: 'Cb',
-        data: [this.lecturaEV],
+        data: [this.chartValue],
+        // data: [Number(this.medicion.valor)],
         tooltip: {
-            valueSuffix: ' Cb'
+            valueSuffix: ' kPa'
         }
     }]
     };
+   // console.log('DEBUG: Highcharts: valor: '+ this.medicion.valor + ' dispositivo: '  + this.dispositivo.nombre);
     this.myChart = Highcharts.chart('highcharts', this.chartOptions );
   }
 }

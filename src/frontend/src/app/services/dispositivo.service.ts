@@ -1,31 +1,38 @@
+
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable no-var */
 import { Injectable } from '@angular/core';
 import { Dispositivo } from '../model/dispositivo';
+import { HttpClient } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
 })
+
+
+
 export class DispositivoService {
-  listado: Array<Dispositivo> = new Array<Dispositivo>();
+  urlApi="http://localhost:8000/api/v1";
 
-  constructor() {
-    var disp: Dispositivo= new Dispositivo(1,"Sensor 1","Patio",1);
-    var disp2: Dispositivo= new Dispositivo(2,"Sensor 2","Cocina",2);
-    var disp3: Dispositivo= new Dispositivo(3,"Sensor 3","Jardin Delantero",3);
-    var disp4: Dispositivo= new Dispositivo(4,"Sensor 4","Living",4);
-    this.listado.push(disp);
-    this.listado.push(disp2);
-    this.listado.push(disp3);
-    this.listado.push(disp4);
-   }
+  constructor( public _http: HttpClient) { }
 
-   getDispositivo(id): Dispositivo {
-    return this.listado.filter(dispositivo=> dispositivo.dispositivoId==id)[0];
+   getListadoDispositivos(): Promise<Dispositivo[]>{
+    return this._http.get(this.urlApi+ "/device/").toPromise().then((listado: Dispositivo[])=>listado);
   }
 
-  getDispositivos(): Dispositivo[] {
-    return this.listado;
-  }
+
+
+  getDispositivo(id): Promise<Dispositivo>{
+    console.log('DEBUG: Dispositivo Service - get dispositivo with ID: '+ id);
+    return this._http.get(this.urlApi+"/device/"+id).toPromise().then((dispositivo: Dispositivo)=>{
+      console.log('DEBUG: Dispositivo Service - API Result dispositivo: '+ dispositivo);
+      return dispositivo;
+    });
+  };
+
+
+
 }

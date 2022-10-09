@@ -1,27 +1,36 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable eqeqeq */
 
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Electrovalvula } from '../model/Electrovalvula';
+import { Logs } from '../model/logRiegos';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ElectrovalvulaService {
 
-  listadoEV: Array<Electrovalvula> = new Array<Electrovalvula>();
 
-  constructor() {
-    const ev1: Electrovalvula= new Electrovalvula(1,'elPatio',1);
-    const ev2: Electrovalvula= new Electrovalvula(2,'elCocina',0);
-    const ev3: Electrovalvula= new Electrovalvula(3,'elJardin Delantero',1);
-    const ev4: Electrovalvula= new Electrovalvula(4,'elLiving',0);
-    this.listadoEV.push(ev1);
-    this.listadoEV.push(ev2);
-    this.listadoEV.push(ev3);
-    this.listadoEV.push(ev4);
-  }
+  export class ElectrovalvulaService {
+    //logs: Logs = new Logs;
+    urlApi='http://localhost:8000/api/v1';
 
-  getEstadoActualEV(id): number {
-    return this.listadoEV.filter(listadoEV=> listadoEV.evId==id)[0].apertura;
-  }
+      constructor(private _http: HttpClient ) {
+     }
+
+    async getEstadoActualEV(id): Promise<number> {
+      try {
+        const respuesta: any = this._http.get(this.urlApi+'/logs/'+id).toPromise();
+        console.log('DEBUG: EV Service - GetEstadoActualEV - ' + respuesta);
+        console.log(respuesta);
+        // return this._http.get(this.urlApi+'/logs/'+id).toPromise().then((log: Logs)=>log.apertura);
+        return (await respuesta).apertura;
+      }
+      catch (error)
+      {
+       console.log('DEBUG - Catched error in GetEstadoActualEV - ' + error);
+        // const cerrada: Promise<number> = 0;
+        return (0);
+      }
 }
+  }
