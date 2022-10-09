@@ -20,13 +20,13 @@ La aplicacion consta de un backend, desarrallado en NodeJS, y de un frontend, de
 En la siguiente figura se pueden ver las interacciones de la aplicacion de frontend con el backend:
 ![architecture](doc/architecture.png)
 
-Estructura de API;s del backend:
+Estructura de APIs del backend:
 
 ### Device API:
 ![deviceAPI](doc/DeviceAPI.png)
 
 ### LogRiego API:
-![LogRiegoAPI](doc/LogRiegoAPI.png)
+![LogRiegoAPI](doc/LogRiegoApi.png)
 
 ### Measures API:
 ![MeasuresAPI](doc/MeasuresAPI.png)
