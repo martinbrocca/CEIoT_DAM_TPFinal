@@ -89,6 +89,29 @@ CREATE TABLE IF NOT EXISTS `DAM`.`Log_Riegos` (
 ENGINE = InnoDB;
 
 
+INSERT INTO DAM.Electrovalvulas (electrovalvulaId, nombre) VALUES (1, 'Patio');
+INSERT INTO DAM.Electrovalvulas (electrovalvulaId, nombre) VALUES (2, 'Cocina');
+INSERT INTO DAM.Electrovalvulas (electrovalvulaId, nombre) VALUES (3, 'Cantero');
+INSERT INTO DAM.Electrovalvulas (electrovalvulaId, nombre) VALUES (4, 'Ventana');
+INSERT INTO DAM.Electrovalvulas (electrovalvulaId, nombre) VALUES (5, 'Invernadero1');
+INSERT INTO DAM.Electrovalvulas (electrovalvulaId, nombre) VALUES (6, 'Invernadero2');
+INSERT INTO DAM.Electrovalvulas (electrovalvulaId, nombre) VALUES (7, 'invernadero3');
+INSERT INTO DAM.Dispositivos (electrovalvulaId, nombre, ubicacion) VALUES (1, 'Sensor1', 'Patio');
+INSERT INTO DAM.Dispositivos (electrovalvulaId, nombre, ubicacion) VALUES (2, 'Sensor2', 'Cocina');
+INSERT INTO DAM.Dispositivos (electrovalvulaId, nombre, ubicacion) VALUES (3, 'Sensor3', 'Cantero');
+INSERT INTO DAM.Dispositivos (electrovalvulaId, nombre, ubicacion) VALUES (4, 'Sensor4', 'Ventana');
+INSERT INTO DAM.Dispositivos (electrovalvulaId, nombre, ubicacion) VALUES (5, 'Sensor5', 'Invernadero1');
+INSERT INTO DAM.Dispositivos (electrovalvulaId, nombre, ubicacion) VALUES (6, 'Sensor6', 'Invernadero2');
+INSERT INTO DAM.Dispositivos (electrovalvulaId, nombre, ubicacion) VALUES (7, 'Sensor7', 'Invernadero3');
+INSERT INTO DAM.Mediciones (dispositivoId, fecha, valor) VALUES (1,'2022-10-09 10:10:10', 15);
+INSERT INTO DAM.Mediciones (dispositivoId, fecha, valor) VALUES (2,'2022-10-09 13:35:00', 15);
+INSERT INTO DAM.Mediciones (dispositivoId, fecha, valor) VALUES (3,'2022-10-09 13:40:00', 15);
+INSERT INTO DAM.Mediciones (dispositivoId, fecha, valor) VALUES (4,'2022-10-09 13:45:00', 15);
+INSERT INTO DAM.Mediciones (dispositivoId, fecha, valor) VALUES (5,'2022-10-09 13:50:00', 15);
+INSERT INTO DAM.Mediciones (dispositivoId, fecha, valor) VALUES (6,'2022-10-09 13:55:00', 15);
+INSERT INTO DAM.Mediciones (dispositivoId, fecha, valor) VALUES (7,'2022-10-09 14:00:00', 15);
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

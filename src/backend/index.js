@@ -22,13 +22,6 @@ app.use(express.json());
 app.use(cors(conrsConfig));
 
 
-
-//var utils = require('./route/mysql');
-
-
-// to serve static files
-//app.use(express.static('/home/node/app/static/'));
-
 //logger function for troubleshooting
 var logger = function (req, res, next) {
     console.log("LOGGER API - " + new Date() );
@@ -39,12 +32,13 @@ app.use(logger);
 
 //Device Router connection
 var routerDevice = require('./route/device');
-app.use('/device', routerDevice);
+app.use('/api/v1/device', routerDevice);
 //Measures Router connection
 var routerMeasures = require('./route/Measures');
-app.use('/measure', routerMeasures);
-var routerMeasures = require('./route/Logs');
-app.use('/logs', routerMeasures);
+app.use('/api/v1/measure', routerMeasures);
+var routerLogs = require('./route/LogRiego');
+//Router connection for LogsRiego
+app.use('/api/v1/logs', routerLogs);
   
 //=======[ Main module code ]==================================================
 

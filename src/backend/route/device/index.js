@@ -22,7 +22,7 @@ routeDevice.get('/', function (req, res) {
 });
 
 // -- Get Device ID: List specific Device with param set as "ID"
-//    Input paramater: DeviceID
+//    Input parameter: DeviceID
 //    Responds 200 if all OK, 400 if error while fetching data from DB
 routeDevice.get('/:id', function (req, res) {
     let deviceID = req.params.id;
@@ -41,7 +41,7 @@ routeDevice.get('/:id', function (req, res) {
 });
 
 // -- DELETE Device ID: delete specific Device with param set as "ID"
-//    Input paramater: DeviceID
+//    Input parameter: DeviceID
 //    Responds 200 if all OK, 400 if error while fetching data from DB
 routeDevice.delete('/:id', function (req, res) {
     let query = 'DELETE from Dispositivos WHERE dispositivoId  = ' + req.params.id;

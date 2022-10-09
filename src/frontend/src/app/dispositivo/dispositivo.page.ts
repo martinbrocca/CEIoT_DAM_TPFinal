@@ -82,7 +82,7 @@ export class DispositivoPage implements OnInit {
   cambiarEstadoEV() {
     this.estadoEV = !this.estadoEV;
     let estadoEVn = Number(this.estadoEV);
-    let now = new Date();
+    let now = new Date();   // <-- New date created to be the same for the new log and the new measument
     console.log('La electrovalvula del dispositivo' + this.dispositivo.nombre + ' esta ' + this.estadoEV + ' en numeros:  ' + estadoEVn);
     let log: Logs = new Logs(0,  Number(this.estadoEV), now , this.dispositivo.electrovalvulaId);
     this.lSrv.newEntrada(log);

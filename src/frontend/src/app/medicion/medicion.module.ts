@@ -9,6 +9,8 @@ import { MedicionPageRoutingModule } from './medicion-routing.module';
 import { MedicionPage } from './medicion.page';
 import { ResaltarDirective } from '../directives/resaltar.directive';
 
+import { LOCALE_ID } from '@angular/core';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -20,6 +22,9 @@ import { ResaltarDirective } from '../directives/resaltar.directive';
       MedicionPage,
       UnidadPipe,
       ResaltarDirective
+    ],
+  providers: [
+      { provide: LOCALE_ID, useValue: 'en-US' }, //replace "en-US" with your locale
     ]
 })
 export class MedicionPageModule {}
