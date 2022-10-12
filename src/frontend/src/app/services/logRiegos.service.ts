@@ -25,6 +25,8 @@ export class LogsService {
   // Add a new log value into the logs table.
   // invokes API Endpoint http://localhost:8000/api/v1/logs/add with a log variable
   newEntrada(log: Logs) {
-    return this._http.post(this.urlApi+'/logs/add',{apertura:log.apertura, fecha:formatDate(log.fecha,'YYYYMMddhhmmss', 'en-US', 'CST' ), electrovalvulaId:log.electrovalvulaId}).toPromise().then((result)=>result);
+    // return this._http.post(this.urlApi+'/logs/add',{apertura:log.apertura, fecha:formatDate(log.fecha,'YYYYMMddhhmmss', 'en-US', 'CST' ), electrovalvulaId:log.electrovalvulaId}).toPromise().then((result)=>result);
+    //return this._http.post(this.urlApi+'/logs/add',{apertura:log.apertura, fecha:log.fecha.toISOString(), electrovalvulaId:log.electrovalvulaId}).toPromise().then((result)=>result);
+    return this._http.post(this.urlApi+'/logs/add',{apertura:log.apertura, fecha:log.fecha.toISOString().slice(0, 19).replace('T', ' '), electrovalvulaId:log.electrovalvulaId}).toPromise().then((result)=>result);
   }
 }
