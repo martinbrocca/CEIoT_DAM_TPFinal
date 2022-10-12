@@ -18,7 +18,7 @@ export class LogsService {
 
 
   getLogsValvula(id): Promise<Logs[]> {
-    //console.log('DEBUG: Log-Riego Service - getLogsValvula ' + id );
+    console.log('DEBUG: Log-Riego Service - getLogsValvula ' + id );
     return this._http.get(this.urlApi+'/logs/'+id +'/all').toPromise().then((logsRiego: Logs[])=>logsRiego);
   }
 

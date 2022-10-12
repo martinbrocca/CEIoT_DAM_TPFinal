@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-debugger */
 /* eslint-disable no-var */
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -13,6 +15,7 @@ import { ElectrovalvulaService } from '../services/electrovalvula.service';
 import { MedicionService } from '../services/medicion.service';
 import { ActivatedRoute } from '@angular/router';
 import { Medicion } from '../model/medicion';
+import {Location} from '@angular/common';
 
 
 declare var require: any;
@@ -25,7 +28,7 @@ require('highcharts/modules/solid-gauge')(Highcharts);
   styleUrls: ['./dispositivo.page.scss'],
 })
 export class DispositivoPage implements OnInit {
-  public dispositivo: Dispositivo;
+  public dispositivo: Dispositivo = new Dispositivo ("", "", "", "");
   public estadoEV = false;
   public myChart;
   private chartOptions;
@@ -35,33 +38,38 @@ export class DispositivoPage implements OnInit {
   public onEVError: boolean;
   private chartValue = 0;
   private chartName = '';
-  constructor(private router: ActivatedRoute, private dispService: DispositivoService, private medSrv: MedicionService, private lSrv: LogsService, private evSrv: ElectrovalvulaService) {
+  constructor(private router: ActivatedRoute, private dispService: DispositivoService, private medSrv: MedicionService, private lSrv: LogsService, private evSrv: ElectrovalvulaService, private _location: Location ) {
+   // this.getDispositivoData();
+  }
 
+  ionViewWillEnter(){
+    this.generarChart();
   }
 
   ngOnInit() {
-
-    this.getDispositivoData();
-   // this.generarChart();
+   // debugger;
+   this.getDispositivoData();
+   //this.generarChart();
 
   }
 
   async getDispositivoData() {
     this.idDispositivo = this.router.snapshot.paramMap.get('id');
-
+   // debugger;
     try {
       this.onError= false;
       //console.log('DEBUG: Entered dispositivo page');
       let dipositivo = await this.dispService.getDispositivo(this.idDispositivo);
       this.dispositivo=dipositivo;
       //console.log(this.dispositivo);
-      console.log('DEBUG: dispositivo page, got deviceID: ' +this.idDispositivo + ' got device: ' + this.dispositivo.nombre);
+      //console.log('DEBUG: dispositivo page, got deviceID: ' +this.idDispositivo + ' got device: ' + this.dispositivo.nombre);
       let med = await this.medSrv.getMedicionByIdDispositivo(this.idDispositivo);
       this.medicion=med;
       console.log('DEBUG: got mediciones for device: ' + this.dispositivo.nombre + ' - med: '+ this.medicion.valor);
       this.chartValue = Number(this.medicion.valor);
       this.chartName = String(this.dispositivo.nombre);
-      this.generarChart();
+      console.log('chartValue: '+ this.chartValue + ' chartName: ' +this.chartName);
+      this.updateChart();
   }
   catch (error) {
     this.onError = true;
@@ -92,8 +100,8 @@ export class DispositivoPage implements OnInit {
       let med: Medicion = new Medicion(0, now, newMedicion, this.dispositivo.dispositivoId);
       this.medSrv.agregarMedicion(med);
       this.chartValue = Number(newMedicion);
-      this.generarChart();
-      console.log('DEBUG: - New chartValue as per closing valve is ' + newMedicion + ' ' + this.chartValue);
+      this.updateChart();
+      //console.log('DEBUG: - New chartValue as per closing valve is ' + newMedicion + ' ' + this.chartValue);
     }
   }
 
@@ -103,6 +111,19 @@ export class DispositivoPage implements OnInit {
     return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
   }
 
+  updateChart() {
+    this.myChart.update({series: [{
+      name: 'kPA',
+      data: [this.chartValue],
+      tooltip: {
+          valueSuffix: ' kPA'
+      }
+  }]});
+  }
+
+  backPage() {
+    this._location.back();
+  }
    generarChart() {
     this.chartOptions={
       chart: {
@@ -115,7 +136,7 @@ export class DispositivoPage implements OnInit {
         }
         ,title: {
           // text: [String(this.dispositivo.nombre)]
-          text: [String(this.chartName)]
+          text: [this.chartName]
         }
         ,credits:{enabled:false}
         ,pane: {
@@ -169,14 +190,13 @@ export class DispositivoPage implements OnInit {
     ,
     series: [{
         name: 'Cb',
-        data: [this.chartValue],
+        data: [Number(this.chartValue)],
         // data: [Number(this.medicion.valor)],
         tooltip: {
             valueSuffix: ' kPa'
         }
     }]
     };
-   // console.log('DEBUG: Highcharts: valor: '+ this.medicion.valor + ' dispositivo: '  + this.dispositivo.nombre);
     this.myChart = Highcharts.chart('highcharts', this.chartOptions );
   }
 }

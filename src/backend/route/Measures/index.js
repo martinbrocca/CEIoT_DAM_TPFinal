@@ -49,8 +49,8 @@ routerMeasure.get('/:id/all', function (req, res) {
 //    Responds 200 if all OK, 400 if error while fetching data from DB
 routerMeasure.post('/add', function(req, res) {
     console.log('DEBUG:  Add Measure: ' + JSON.stringify(req.body));
-    sql.query("SET time_zone = '-06:00'");
-    sql.query('Insert into Mediciones (fecha,valor,dispositivoId) values (?,?,?)', [String(req.body.fecha), req.body.valor, req.body.dispositivoId], function(err, result, fields) {
+    sql.query("SET time_zone = '-06:00'");   // THIS NEEDS TO BE FIXED AND SET AS A PARAMETER, OR GENERAL VARIABLE
+    sql.query('Insert into Mediciones (fecha,valor,dispositivoId) values (?,?,?)', [req.body.fecha, req.body.valor, req.body.dispositivoId], function(err, result, fields) {
         if (err) {
             console.error(err);
             res.send("Error while adding a new measurement").status(400);

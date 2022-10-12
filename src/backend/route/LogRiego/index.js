@@ -50,10 +50,8 @@ routerLogs.get('/:id/all', function (req, res) {
 //    Responds 200 if all OK, 400 if error while fetching data from DB
 routerLogs.post('/add', function(req, res) {
     console.log('DEBUG:  Add LogRiego: ' + JSON.stringify(req.body));
-    sql.query("SET time_zone = '-06:00'");
-
-    console.log('############################# DEBUG: DATE: ' + typeof req.body.fecha);
-    sql.query('Insert into Log_Riegos (apertura,fecha,electrovalvulaId) values (?,?,?)', [req.body.apertura, String(req.body.fecha), req.body.electrovalvulaId], function(err, result, fields) {
+    sql.query("SET time_zone = '-06:00'");  // THIS NEEDS TO BE FIXED AND SET AS A PARAMETER, OR GENERAL VARIABLE
+    sql.query('Insert into Log_Riegos (apertura,fecha,electrovalvulaId) values (?,?,?)', [req.body.apertura, req.body.fecha, req.body.electrovalvulaId], function(err, result, fields) {
         if (err) {
             console.error(err);
             res.send("Error while adding a new log for valve:" + req.body.electrovalvulaId ).status(400);
